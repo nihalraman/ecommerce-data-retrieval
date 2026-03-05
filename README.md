@@ -26,7 +26,7 @@ python run.py --mode scrape --site costco "water bottle"
 
 Claude controls your real browser via the **Claude for Chrome** extension. It navigates to the search page, scrolls to load all products, takes a full-page screenshot, and extracts product data visually — no CSS selectors needed. This makes it easy to add new retailers without any selector configuration.
 
-**Prerequisites (agent mode only):** [Claude Code](https://claude.ai/code) must be installed. Install the Claude for Chrome extension, then launch Claude Code with the `--chrome` flag:
+**Prerequisites (agent mode only):** [Claude Code](https://claude.ai/code) must be installed. **Install the Claude for Chrome extension**, then launch Claude Code with the `--chrome` flag:
 
 ```bash
 claude --chrome
