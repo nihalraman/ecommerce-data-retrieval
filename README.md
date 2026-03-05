@@ -1,6 +1,6 @@
 # Ecommerce Search Results Scraper
 
-Captures first-page search results from ecommerce sites for research purposes. Supports three collection methods: automated Playwright scraping, a Claude AI agent, and a bookmarklet for manual collection by workers.
+Captures first-page search results from ecommerce sites for research purposes. Supports three collection methods: automated Playwright scraping, a Claude AI agent, and a bookmarklet for assisted manual collection.
 
 ## Setup
 
