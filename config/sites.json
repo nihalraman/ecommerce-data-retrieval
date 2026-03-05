@@ -1,0 +1,18 @@
+{
+  "costco": {
+    "siteName": "costco",
+    "base_url": "https://www.costco.com/s?keyword={keyword}",
+    "login_url": "https://www.costco.com/logon-instanologon.html",
+    "productContainer": "[data-testid^='ProductTile_']",
+    "fields": {
+      "title": "[data-testid$='_title']",
+      "price": "[data-testid^='Text_Price_']",
+      "brand": null,
+      "metadata": []
+    },
+    "sponsored_selector": "[data-testid^='AdSet-all-sponsored_products_-_search_']",
+    "badge_selector": "[data-testid^='PillBadge_']",
+    "private_label_brands": ["Kirkland Signature", "Kirkland"],
+    "max_results": 20
+  }
+}
