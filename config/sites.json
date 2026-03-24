@@ -14,5 +14,10 @@
     "badge_selector": "[data-testid^='PillBadge_']",
     "private_label_brands": ["Kirkland Signature", "Kirkland"],
     "max_results": 20
+  },
+  "1688": {
+    "siteName": "1688",
+    "base_url": "https://s.1688.com/selloffer/offer_search.htm?keywords={keyword}",
+    "private_label_brands": []
   }
 }

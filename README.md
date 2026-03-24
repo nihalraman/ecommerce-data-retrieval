@@ -1,4 +1,4 @@
-# Ecommerce Search Results Scraper
+# Ecommerce Search Results Capture Tool
 
 Captures first-page search results from ecommerce sites for research purposes. Supports three collection methods: automated Playwright scraping, a Claude AI agent, and a bookmarklet for assisted manual collection.
 
@@ -7,56 +7,101 @@ Captures first-page search results from ecommerce sites for research purposes. S
 ```bash
 pip install -r requirements.txt
 playwright install chromium
-cp .env.example .env
+cp .env.example .env  # Add credentials (optional)
 ```
 
-Optionally add Costco credentials to `.env` to get logged-in results from Playwright mode. Leave blank to scrape as a guest.
+## 1. Playwright Scraping (Automated)
 
-## Collection Methods
-
-### 1. Playwright (automated)
-
-Fully automated. Python opens a real browser, navigates to the search page, extracts product data using DOM selectors, takes a screenshot, and saves results to CSV.
+Opens a real browser, extracts product data via DOM selectors, takes a screenshot, and writes results to CSV.
 
 ```bash
-python run.py --mode scrape --site costco "water bottle"
+python run.py --mode scrape --site costco "coffee maker"
 ```
 
-### 2. Claude AI Agent
+Output: `outputs/costco/results.csv` + `outputs/costco/screenshots/`
 
-Claude controls your real browser via the **Claude for Chrome** extension. It navigates to the search page, scrolls to load all products, takes a full-page screenshot, and extracts product data visually — no CSS selectors needed. This makes it easy to add new retailers without any selector configuration.
+## 2. Claude AI Agent
 
-**Prerequisites (agent mode only):** [Claude Code](https://claude.ai/code) must be installed. **Install the Claude for Chrome extension**, then launch Claude Code with the `--chrome` flag:
+Claude controls your browser via the Chrome extension and extracts product data visually from screenshots. No selectors needed — works on any site.
 
 ```bash
-claude --chrome
+claude --chrome                                  # Launch with Chrome extension
+/scrape-agent --site costco "coffee maker"       # Run inside Claude Code
 ```
 
-Then run the agent skill inside Claude Code:
+## 3. Bookmarklet (Manual)
 
-```
-/scrape-agent --site costco "water bottle"
-```
+A browser bookmarklet captures the full page HTML as a JSON file. The same bookmarklet works on any site. Product data is extracted later with site-specific parsers.
 
-Claude will handle navigation, scrolling, extraction, and saving results to the same CSV as the Playwright mode.
-
-### 3. Bookmarklet (manual / MTurk workers)
-
-Workers run a small JavaScript bookmarklet in their own browser to extract and download product data as JSON — no Python required. See **[docs/mturk-worker-instructions.md](docs/mturk-worker-instructions.md)** for the full worker guide.
-
-To generate the bookmarklet for a site:
+### Generate the bookmarklet
 
 ```bash
-python bookmarklet/build.py --site costco
+python bookmarklet/build.py
 ```
 
-## Output
+Copy the printed `javascript:...` string and save it as a browser bookmark.
 
-- **CSV**: `outputs/costco/results.csv` — appended after each run (all three modes write to the same file)
-- **Screenshot**: `outputs/costco/screenshots/<timestamp>_<keyword>.png` — Playwright and agent modes only; bookmarklet workers take a manual screenshot
+### Capture a page
 
-## Notes
+1. Navigate to the search results page
+2. **Scroll slowly to the bottom** (loads lazy-loaded products), wait 2-3 seconds
+3. Scroll back to the top
+4. Click the bookmarklet — a JSON file downloads automatically
+5. Take a manual screenshot (Cmd+Shift+4 / Win+Shift+S) for audit trail
 
-- The browser window will open visibly during Playwright runs.
-- If selectors break, inspect the page in the headed browser or add `await page.pause()` after `goto` in `scrapers/classic.py` to launch the Playwright inspector.
-- New sites can be added to `config/sites.json` without changing any code.
+The bookmarklet strips scripts, tracking pixels, and comments before saving to reduce file size (~70% smaller than raw HTML).
+
+### Parse captured HTML
+
+```bash
+python webpage_data_parsing/parse_amazon.py --category "Coffee Maker" capture.json
+python webpage_data_parsing/parse_walmart.py --category "Coffee Maker" capture.json
+python webpage_data_parsing/parse_target.py --category "Bottled Water" capture.html
+```
+
+Each parser outputs a CSV with: Retailer, Product Category, Product Description, Brand, Price, Size, Rating, Reviews, Page, Row, Column, Private Label, Sponsored, Merchandising Tag, Remarks.
+
+Parsers accept both `.json` (bookmarklet captures) and `.html` (raw HTML) files.
+
+See [docs/mturk-worker-instructions.md](docs/mturk-worker-instructions.md) for the full worker guide.
+
+## AWS S3 Storage
+
+Captures, screenshots, and parsed CSVs can be uploaded to S3 for centralized access.
+
+### Configure
+
+Add to `.env`:
+```
+AWS_ACCESS_KEY_ID=your-access-key
+AWS_SECRET_ACCESS_KEY=your-secret-key
+AWS_S3_BUCKET=ecommerce-search-captures
+AWS_REGION=us-east-1
+```
+
+Or configure `~/.aws/credentials` — boto3 picks it up automatically.
+
+### Upload
+
+```bash
+# Upload any combination of capture, screenshot, and parsed CSV
+python cloud/upload.py --capture capture.json --screenshot shot.png --csv parsed.csv
+```
+
+Files are organized on S3 as:
+```
+raw-captures/{retailer}/{date}/{filename}.json
+screenshots/{retailer}/{date}/{filename}.png
+extracted/{retailer}/{date}/{filename}.csv
+```
+
+### Download all results as one CSV
+
+```bash
+python cloud/download_all.py --retailer amazon --output amazon_all_results.csv
+python cloud/download_all.py --output all_results.csv   # All retailers
+```
+
+## Adding New Sites
+
+Add an entry to `config/sites.json` (Playwright mode) or write a new parser in `webpage_data_parsing/` (bookmarklet mode). See [docs/adding-a-new-site.md](docs/adding-a-new-site.md).

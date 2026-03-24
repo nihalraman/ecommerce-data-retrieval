@@ -5,7 +5,8 @@ from datetime import datetime
 CSV_COLUMNS = [
     "site", "timestamp", "search_string", "rank",
     "brand", "price", "is_sponsored", "is_private_label",
-    "badges", "product_title", "tile_x", "tile_y", "screenshot_file", "source",
+    "badges", "badges_en", "product_title", "product_title_en",
+    "tile_x", "tile_y", "screenshot_file", "source",
 ]
 
 

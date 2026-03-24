@@ -1,70 +1,72 @@
 # MTurk Worker Instructions
 
-You will visit a shopping website, search for a product, and capture the results using a bookmarklet (a special browser bookmark). The whole task takes about 5 minutes.
+You will visit a shopping website, search for a product, and save a copy of the search results page. The whole task takes about 5 minutes.
+
+## What you'll be doing
+
+You are saving a snapshot of a search results page so we can study how products are displayed. You'll use a special bookmark (called a "bookmarklet") that saves the page as a file — one click and it downloads automatically. No software to install.
 
 ---
 
-## Step 1: Add the bookmarklet to your browser
+## One-time setup: Add the bookmarklet to your browser
 
-1. Right-click your browser's bookmarks bar and choose **Add page** or **Add bookmark**
-2. Give it any name (e.g. "Capture Results")
-3. In the URL field, paste the `javascript:` code provided in the HIT
-4. Save it
+You only need to do this once. After that, the bookmark stays in your browser for all future HITs.
 
-> The bookmarks bar must be visible. In Chrome: View → Always Show Bookmarks Bar. In Firefox: View → Toolbars → Bookmarks Toolbar.
+1. Make sure your **bookmarks bar is visible**
+   - **Chrome**: Menu → Bookmarks → Show Bookmarks Bar (or press `Ctrl+Shift+B` / `Cmd+Shift+B`)
+   - **Firefox**: Menu → View → Toolbars → Bookmarks Toolbar
+2. **Right-click** on the bookmarks bar and choose **Add page** (Chrome) or **Add Bookmark** (Firefox)
+3. For the **Name**, type anything you like (e.g. "Capture Page")
+4. For the **URL**, paste the long `javascript:...` code provided in the HIT description
+5. Click **Save**
+
+You should now see your new bookmark on the bar.
 
 ---
 
-## Step 2: Go to the search page
+## For each HIT
 
-1. Open the website listed in your HIT (e.g. costco.com)
-2. Search for the keyword listed in your HIT
+### Step 1: Go to the search page
+
+1. Open the website listed in the HIT (e.g. costco.com, amazon.com)
+2. Type the search keyword from the HIT into the site's search box and press Enter
 3. Wait for the results to fully load
 
----
+### Step 2: Scroll the entire page (do not skip this)
 
-## Step 3: Scroll the page
+Many shopping sites load products as you scroll. If you skip this step, some products will be missing from the capture.
 
-This step is required — do not skip it.
+1. **Scroll slowly all the way down** to the bottom of the search results
+2. **Wait 2–3 seconds** at the bottom
+3. **Scroll back up** to the top of the page
 
-1. Slowly scroll down to the **bottom** of the search results
-2. Pause for 2–3 seconds
-3. Scroll back up to the **top** of the page
+### Step 3: Click the bookmarklet
 
-This ensures all products are loaded before capture.
+1. Click the "Capture Page" bookmark you created during setup
+2. A file will download automatically (named something like `capture_www.costco.com_20260315_143022.json`)
+3. Don't open the file — just note where it was saved
 
----
+### Step 4: Take a screenshot
 
-## Step 4: Run the bookmarklet
+Take a screenshot of the search results page as it appears on your screen. This is used as a visual reference to verify the capture.
 
-1. Click the bookmarklet in your bookmarks bar
-2. A JSON file will download automatically (e.g. `costco_planogram.json`)
-3. If nothing downloads, check that your browser allows downloads from this site
+- **Mac**: `Cmd + Shift + 3` (full screen) or `Cmd + Shift + 4` (select area)
+- **Windows**: `Win + Shift + S`, then save the image
 
----
-
-## Step 5: Take a screenshot
-
-1. Take a screenshot of the full search results page as it appears on your screen
-2. Save it as a PNG or JPG file
-
-**Mac**: Press `Cmd + Shift + 3` for full screen, or `Cmd + Shift + 4` to select an area
-**Windows**: Press `Win + Shift + S`, then save the image
-
----
-
-## Step 6: Submit
+### Step 5: Upload and submit
 
 Upload both files to the HIT:
-- The downloaded JSON file
-- Your screenshot
+1. The downloaded `.json` file
+2. Your screenshot image
 
 ---
 
 ## Troubleshooting
 
-**The bookmarklet didn't do anything** — Make sure you pasted the full `javascript:` code into the URL field of the bookmark, not the name field. Try again on the search results page (not the homepage).
+**The bookmarklet didn't do anything** — Make sure you pasted the full `javascript:...` code into the **URL** field of the bookmark (not the Name field). Also make sure you're on the search results page, not the site's homepage.
 
-**No file downloaded** — Your browser may have blocked the download. Check for a blocked download notice in the address bar and allow it.
+**No file downloaded** — Your browser may have blocked the download. Look for a "blocked download" icon in the address bar or a notification at the bottom of the window, and click "Allow" or "Keep".
 
-**I see a CAPTCHA or "robot check"** — Stop and return the HIT. Do not attempt to bypass it.
+**I see a CAPTCHA or "are you a robot?" check** — Do not try to get past it. Return the HIT and move on to the next one.
+
+**The page looks different from what I expected** — As long as you can see search results (product images, prices, titles), proceed normally. Some sites look different when you're not logged in, and that's fine.
