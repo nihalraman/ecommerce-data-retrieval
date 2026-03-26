@@ -147,20 +147,14 @@ def _is_in_carousel(tile):
     return False
 
 
-def parse_html(html_path, category, page=1):
-    """Parse Walmart HTML file and return list of product dicts."""
-    html = load_html(html_path)
-
-    soup = BeautifulSoup(html, "html.parser")
-    for script in soup.find_all("script"):
-        script.decompose()
-
+def _parse_soup(soup, category, page=1):
+    """Core extraction logic operating on a BeautifulSoup object."""
     # Walmart uses data-item-id on product tiles
     all_tiles = soup.select("div[data-item-id]")
     tiles = [t for t in all_tiles if not _is_in_carousel(t)]
 
     if not tiles:
-        print("Warning: no product tiles found in %s" % html_path, file=sys.stderr)
+        print("Warning: no product tiles found", file=sys.stderr)
         return []
 
     rows = []
@@ -285,6 +279,23 @@ def parse_html(html_path, category, page=1):
         })
 
     return rows
+
+
+def parse_html(html_path, category, page=1):
+    """Parse Walmart HTML file and return list of product dicts."""
+    html = load_html(html_path)
+    soup = BeautifulSoup(html, "html.parser")
+    for script in soup.find_all("script"):
+        script.decompose()
+    return _parse_soup(soup, category, page)
+
+
+def parse_html_string(html, category, page=1):
+    """Parse raw HTML string (no file I/O). Used by server.py."""
+    soup = BeautifulSoup(html, "html.parser")
+    for script in soup.find_all("script"):
+        script.decompose()
+    return _parse_soup(soup, category, page)
 
 
 def main():

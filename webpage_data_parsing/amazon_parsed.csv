@@ -1,0 +1,57 @@
+Retailer,Product Category,Product Description,Brand,Price,Size,Rating,# of Reviews,Page,Row (top to bottom),Column (left to right),"Private Label (Yes: 1, No: 0)","Sponsored (Yes:1 , No:0)","Merchandising Tag (Yes: 1, No:0)",Remarks
+Amazon,cooking oil,"Amazon Grocery, Vegetable Oil, 48 Fl Oz","Amazon Grocery, Vegetable",3.55,48 Fl Oz (Pack of 1),4.8,29400,1,1,1,0,1,1,"Has an ""Overall Pick"" badge (merchandising tag); Has a ""Big Spring Deal"" badge (merchandising tag)"
+Amazon,cooking oil,"Chosen Foods Avocado Oil, 16.9 Fl Oz - All Purpose Cooking Oil made from 100% Pure Avocados - Non-GMO, Gluten-Free, Keto Friendly, Glyphosate Free - 500mL (Pack Of 1)",Chosen Foods Avocado,12.23,16.9 Fl Oz,4.8,15200,1,1,2,0,1,1,"Has a ""Best Seller"" badge (merchandising tag)"
+Amazon,cooking oil,"Graza Drizzle Extra Virgin Olive Oil, Finishing Oil - High Polyphenol Early Harvest EVOO Finishing Oil in a Squeeze Bottle - Single Farm Olives from Spain - 11.8 Fl Oz (350ml)",Graza Drizzle Extra,16.49,11.8 Fl Oz (Pack of 1),4.7,1000,1,1,3,0,1,0,
+Amazon,cooking oil,"Grove Extra Virgin Avocado Oil - Plant Based, Vegan, Gluten Free, 100% Natural, Cold Pressed, High Smoke Point, 16 Whole Avocados in Every Bottle (8.4oz, 250ml)",Grove Extra Virgin,17.5,8.4oz,4.5,134,1,1,4,0,1,0,
+Amazon,cooking oil,"Amazon Grocery, Vegetable Oil, 128 Fl Oz","Amazon Grocery, Vegetable",8.9,128 Fl Oz (Pack of 1),4.8,29400,1,2,1,0,0,1,"Has a ""Big Spring Deal"" badge (merchandising tag)"
+Amazon,cooking oil,"Amazon Grocery, Canola Oil, 48 Fl Oz","Amazon Grocery, Canola",3.67,48 Fl Oz,4.8,19000,1,2,2,0,0,1,"Has a ""Big Spring Deal"" badge (merchandising tag)"
+Amazon,cooking oil,"Crisco Pure Canola Oil, 1 Gallon",Crisco Pure Canola,10.98,1 Gallon,4.8,528,1,2,3,0,0,0,
+Amazon,cooking oil,"Crisco Pure Vegetable Oil, 1 Gallon",Crisco Pure Vegetable,11.97,1 Gallon,4.7,5500,1,2,4,0,0,0,
+Amazon,cooking oil,"Crisco Pure Canola Oil, 64 Fluid Ounce",Crisco Pure Canola,7.31,,4.7,5500,1,3,1,0,0,0,
+Amazon,cooking oil,"Crisco Pure Vegetable Oil, 16 Fluid Ounce",Crisco Pure Vegetable,2.97,16 Fl Oz,4.7,1100,1,3,2,0,0,0,
+Amazon,cooking oil,"Crisco Pure Vegetable Oil, 64 Fluid Ounce",Crisco Pure Vegetable,7.15,,4.7,5500,1,3,3,0,0,0,
+Amazon,cooking oil,"Amazon Grocery, Peanut Oil, 128 Fl Oz","Amazon Grocery, Peanut",14.58,128 Fl Oz (Pack of 1),4.7,11000,1,3,4,0,0,1,"Has a ""Big Spring Deal"" badge (merchandising tag)"
+Amazon,cooking oil,64 FL.OZ Organic Extra Virgin Olive Oil Cold Pressed,64 FL.OZ,37.99,,4.4,233,1,4,1,0,1,0,
+Amazon,cooking oil,"Bertolli Extra Virgin Olive Oil, 17 oz",Bertolli Extra Virgin,6.97,17 oz,4.8,5500,1,4,2,0,1,0,
+Amazon,cooking oil,"Algae Cooking Club Chef-Grade 100% Algae Cooking Oil - Avocado Oil Alternative - 535°F High Smoke Point - Omega-9 Rich, Neutral Buttery Flavor - Seed Oil-Free - For Searing, Baking, Frying (16 fl oz)",Algae Cooking Club,17.0,16 fl oz,4.6,1200,1,4,3,0,1,1,"Has a ""Big Spring Deal"" badge (merchandising tag)"
+Amazon,cooking oil,"Crisco Pure Canola Oil, 40 Fluid Ounce",Crisco Pure Canola,4.57,40 Fl Oz,4.8,1200,1,4,4,0,0,0,
+Amazon,cooking oil,"Amazon Grocery, Canola Oil, 128 Fl Oz","Amazon Grocery, Canola",9.9,128 Fl Oz,4.8,19000,1,5,1,0,0,0,
+Amazon,cooking oil,"BetterBody Foods Refined Avocado Oil, Non-GMO Cooking Oil, Kosher, Keto and Paleo Diet Friendly, Frying, Baking, Avocado Oil, 500 mL, 16.9 Fl Oz",BetterBody Foods Refined,10.28,16.9 Fl Oz (Pack of 1),4.8,26500,1,5,2,0,0,0,
+Amazon,cooking oil,"Amazon Grocery, Corn Oil, 128 Fl Oz","Amazon Grocery, Corn",10.68,128 Fl Oz (Pack of 1),4.7,3300,1,5,3,0,0,1,"Has a ""Big Spring Deal"" badge (merchandising tag)"
+Amazon,cooking oil,Atlas 1 LT Cold Press Extra Virgin Olive Oil with Polyphenol Rich from Morocco | Newly Harvested Unprocessed from One Single Family Farm | Moroccan Organic EVOO Trusted by Award-Winning Chefs,Atlas 1 LT,27.67,34 Fl Oz (Pack of 1),4.7,23800,1,5,4,0,1,0,
+Amazon,cooking oil,"Blueprint Bryan Johnson Olive Oil – Snake Oil- High Polyphenol Extra Virgin Olive Oil (400+ mg/kg) – Early Harvest, First Cold Press EVOO – Keto, Paleo, Non-GMO – 2 Pack - 750ml Glass Bottle",Blueprint Bryan Johnson,70.0,2 Count,4.5,809,1,6,1,0,1,0,
+Amazon,cooking oil,"Zatural 100% Pure Cold Pressed Grapeseed Oil – Naturally Grown Virgin, High Smoke Point 450°F+, Non-GMO, Perfect for Cooking Frying Baking, Dressings Marinades & Skincare Hair (32 Fl oz)",Zatural 100% Pure,21.99,32 Fl oz,4.7,1700,1,6,2,0,1,0,
+Amazon,cooking oil,Sadaf Pure Grapeseed Oil - Grape Seed Oil for Cooking & Baking - Healthy Cooking Oil - High Smoking Point - Italian Cuisine - Kosher & Natural - 2L Bottle,Sadaf Pure Grapeseed,23.99,,4.6,55,1,6,3,0,1,0,
+Amazon,cooking oil,"365 by Whole Foods Market, Vegetable Oil, 32 Fl Oz",365 by Whole Foods Market,4.39,32 Fl Oz,4.7,3400,1,6,4,1,0,0,
+Amazon,cooking oil,"Pompeian Smooth Extra Virgin Olive Oil, Contains Polyphenols, First Cold Pressed, 68 Fl Oz",Pompeian Smooth Extra,21.48,68 Fl Oz (Pack of 1),4.8,48200,1,7,1,0,0,0,
+Amazon,cooking oil,"Graza Sizzle Extra Virgin Olive Oil, Cooking Oil - High Polyphenol Peak Harvest EVOO Cooking Oil in a Squeeze Bottle - Single Origin Olive Oils from Spain - 25.3 Fl Oz (750ml)",Graza Sizzle Extra,13.48,25.3 Fl Oz,4.7,3000,1,7,2,0,0,0,
+Amazon,cooking oil,"Kevala Avocado Oil – Cold Pressed | Non‑GMO Project Verified & Kosher | Multipurpose for High Smoke Point Cooking, Roasting, Sautéing & Skin Moisturizing – Ideal Kitchen Staple – 128 Fl Oz (Pack of 1)",Kevala Avocado Oil,48.97,128 Fl Oz,4.7,3100,1,7,3,0,0,0,
+Amazon,cooking oil,"Amazon Grocery, Olive Oil, Medium Flavor, 16.9 Fl Oz (Previously Amazon Fresh, Packaging May Vary)","Amazon Grocery, Olive",3.76,16.9 Fl Oz (Pack of 1),4.7,2700,1,7,4,0,0,1,"Has a ""Big Spring Deal"" badge (merchandising tag)"
+Amazon,cooking oil,"Algae Cooking Club Chef-Grade 100% Algae Cooking Oil - Avocado Oil Alternative - 535°F High Smoke Point - Omega-9 Rich, Neutral Buttery Flavor - Seed Oil-Free - For Searing, Baking, Frying (2, 16 fl oz)",Algae Cooking Club,33.06,16 fl oz,4.6,1200,1,8,1,0,0,1,"Has a ""Big Spring Deal"" badge (merchandising tag)"
+Amazon,cooking oil,"Pompeian 100% Grapeseed Oil, Light and Subtle Flavor, 68 Fl Oz",Pompeian 100% Grapeseed,14.63,68 Fl Oz (Pack of 1),4.8,13800,1,8,2,0,0,0,
+Amazon,cooking oil,"Iberia Premium Blend, Sunflower Oil & Extra Virgin Olive Oil, High Heat Frying, 68 Fl Oz","Iberia Premium Blend,",15.37,68 Fl Oz (Pack of 1),4.7,4100,1,8,3,0,0,0,
+Amazon,cooking oil,"Mazola Corn Oil, 128 fl oz","Mazola Corn Oil,",16.27,128 fl oz,4.8,1400,1,8,4,0,0,0,
+Amazon,cooking oil,"Amazon Grocery, Olive Oil, Light Flavor, 51 Fl Oz","Amazon Grocery, Olive",10.85,51 Fl Oz (Pack of 1),4.7,2000,1,9,1,0,0,1,"Has a ""Big Spring Deal"" badge (merchandising tag)"
+Amazon,cooking oil,"365 by Whole Foods Market, Canola Oil, 32 oz",365 by Whole Foods Market,5.99,32 Fl Oz (Pack of 1),4.7,7700,1,9,2,1,0,0,
+Amazon,cooking oil,"Crisco Pure Vegetable Oil, 40 Fluid Ounce",Crisco Pure Vegetable,3.99,,4.8,1200,1,9,3,0,0,0,
+Amazon,cooking oil,"WESSON Pure Vegetable Oil, 0 g Trans Fat, Cholesterol Free, 24 oz.",WESSON Pure Vegetable,4.29,24 oz,4.7,3200,1,9,4,0,0,0,
+Amazon,cooking oil,"AVO Bulk Avocado Oil for Cooking 1 Gallon (128 fl oz), Non-GMO Certified, No Preservatives, High Smoke Point 500°F, Neutral Flavor, Gluten-Free, Plant-Based, OU Kosher",AVO Bulk Avocado,52.85,128 Fl Oz,4.7,1400,1,10,1,0,0,0,
+Amazon,cooking oil,"Graza Frizzle High Heat Cooking Oil - Cooking Oil with a High Smoke Point & Neutral Flavor in a Squeeze Bottle for Frying, Baking & Grilling - Oil Made from 100% Olives - 25.3 Fl Oz (750ml)",Graza Frizzle,10.97,25.3 Fl Oz (Pack of 1),4.6,475,1,10,2,0,0,0,
+Amazon,cooking oil,"Kirkland Signature Canola Oil 2.84 L, 2-count",Kirkland Signature Canola,30.99,,4.5,136,1,10,3,0,0,0,
+Amazon,cooking oil,"Bertolli Cooking Olive Oil, High Smoke Point, 32 fl oz",Bertolli Cooking Olive,12.99,32 fl oz,4.8,491,1,10,4,0,0,0,
+Amazon,cooking oil,"Carrington Farms Organic Liquid Coconut Cooking Oil, 32 Fl Oz –Unflavored, Unscented, High Smoke Point, MCT-Rich, No Trans Fat – For Cooking, Sautéing, Frying & Baking – Gluten Free, Non-GMO, Hexane Free, BPA Free Bottle",Carrington Farms,19.44,32 Fl Oz (Pack of 1),4.7,14300,1,11,1,0,0,0,
+Amazon,cooking oil,"365 by Whole Foods Market, Avocado Oil, 25.4 Fl Oz",365 by Whole Foods Market,13.76,25.4 Fl Oz (Pack of 1),4.8,4200,1,11,2,1,0,0,
+Amazon,cooking oil,"Healthy Harvest Canola Oil, Naturally Expeller Pressed, Gourmet Canola Cooking Oil, Medium-Heat Cooking, Great for Dressings, Marinades, and Frying, 1-Gallon",Healthy Harvest Canola,35.99,128 Fl Oz (Pack of 1),4.6,776,1,11,3,0,0,0,
+Amazon,cooking oil,"Spectrum Naturals Organic Hi Heat Sunflower Oil, 32 Ounce",Spectrum Naturals,19.99,,4.8,856,1,11,4,0,0,0,
+Amazon,cooking oil,"Iberia Extra Virgin Olive Oil & Sunflower Oil Blend, 51 Fl Oz",Iberia Extra Virgin,8.68,51 Fl Oz (Pack of 1),4.6,1200,1,12,1,0,0,0,
+Amazon,cooking oil,"Spectrum Naturals Oil Canola Refined Organic, 32 oz",Spectrum Naturals Oil,25.66,32 Fl Oz (Pack of 1),4.7,1300,1,12,2,0,0,0,
+Amazon,cooking oil,"Spectrum High Heat Safflower Oil, 32 oz",Spectrum,14.99,32 oz,4.7,844,1,12,3,0,0,0,
+Amazon,cooking oil,"Pompeian Robust Extra Virgin Olive Oil, Contains Polyphenols, First Cold Pressed, 16 Fl Oz",Pompeian Robust Extra,5.11,16 Fl Oz (Pack of 1),4.8,51100,1,12,4,0,0,0,
+Amazon,cooking oil,"Pompeian Light Taste Olive Oil, High Heat Cooking, Baking & Sauteing, High Smoke Point, 32 Fl Oz",Pompeian Light Taste,11.88,32 Fl Oz (Pack of 1),4.8,6700,1,13,1,0,0,0,
+Amazon,cooking oil,"365 by Whole Foods Market, Organic Canola Cooking Oil, 16 Fl Oz",365 by Whole Foods Market,4.99,16 Fl Oz (Pack of 1),4.6,2800,1,13,2,1,0,0,
+Amazon,cooking oil,"Kevala Rice Bran Oil – Smooth Oil with Delicate Scent and Flavor for Baking, Great for Home and Restaurant Cooking, Packed with Vitamin E and Antioxidants, Bulk Size Bottle 128 fl oz, 1 gal",Kevala Rice Bran,34.98,128 Fl Oz (Pack of 1),4.8,465,1,13,3,0,0,0,
+Amazon,cooking oil,"BetterBody Foods Refined Non-GMO Cooking Oil, Kosher, Keto and Paleo Diet Friendly, Avocado Oil, 1 Liter, 33.8 Fl Oz",BetterBody Foods Refined,19.27,33.81 Fl Oz (Pack of 1),4.7,11600,1,13,4,0,0,0,
+Amazon,cooking oil,"Baja Precious - Avocado Oil 100% Pure, 1 Gallon Jug, Food Grade Perfect for High Heat Cooking, Skincare, Hair Treatments, Soapmaking & More",Baja Precious -,51.85,128 Fl Oz (Pack of 1),4.8,1900,1,14,1,0,0,0,
+Amazon,cooking oil,"Amazon Grocery, Avocado Oil, 33.8 Fl Oz (Previously Amazon Fresh, Packaging May Vary)","Amazon Grocery, Avocado",13.14,33.8 Fl Oz (Pack of 1),4.8,11700,1,14,2,0,0,1,"Has a ""Big Spring Deal"" badge (merchandising tag)"
+Amazon,cooking oil,USDA Certified Organic Cold Pressed Unrefined Raw Avocado Oil - 1 Gallon/128 fl.oz,USDA Certified,52.99,1 Gallon,4.7,380,1,14,3,0,0,0,
+Amazon,cooking oil,"RICE BRAN OIL | 1 Gallon (128 Ounces) | Kosher | All- Natural, Made from 100% Non-GMO Rice | Rich in Vit E and Gamma Oryzanol | Unfiltered, No Trans Fat | by Heavenly Chef",RICE BRAN OIL,31.99,128 Fl Oz (Pack of 1),4.8,1100,1,14,4,0,0,0,

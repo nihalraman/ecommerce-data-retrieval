@@ -1,7 +1,7 @@
-"""Download and concatenate all extracted CSVs from S3 into a single local file.
+"""Download and concatenate all extracted CSVs from Dropbox into a single local file.
 
 Usage:
-    python cloud/download_all.py --retailer amazon --output amazon_all_results.csv
+    python cloud/download_all.py --website amazon --output amazon_all_results.csv
     python cloud/download_all.py --output all_results.csv
 """
 
@@ -10,41 +10,60 @@ import csv
 import io
 import os
 
-import boto3
+import dropbox
 from dotenv import load_dotenv
 
 load_dotenv()
 
-BUCKET = os.getenv("AWS_S3_BUCKET", "ecommerce-search-captures")
-REGION = os.getenv("AWS_REGION", "us-east-1")
+DROPBOX_ACCESS_TOKEN = os.getenv("DROPBOX_ACCESS_TOKEN", "")
+DROPBOX_BASE_PATH = "/CM in China/ECommerce Project"
 
 
-def get_s3_client():
-    return boto3.client("s3", region_name=REGION)
+def get_dropbox_client():
+    if not DROPBOX_ACCESS_TOKEN:
+        raise RuntimeError("DROPBOX_ACCESS_TOKEN not set in environment")
+    return dropbox.Dropbox(DROPBOX_ACCESS_TOKEN)
 
 
-def list_csv_keys(s3, retailer=None):
-    """List all CSV file keys under extracted/ prefix."""
-    prefix = "extracted/%s/" % retailer if retailer else "extracted/"
-    keys = []
-    paginator = s3.get_paginator("list_objects_v2")
-    for page in paginator.paginate(Bucket=BUCKET, Prefix=prefix):
-        for obj in page.get("Contents", []):
-            if obj["Key"].endswith(".csv"):
-                keys.append(obj["Key"])
-    return sorted(keys)
+def capitalize_site(website):
+    if website.isdigit():
+        return website
+    return website.capitalize()
 
 
-def download_and_concatenate(s3, keys, output_path):
+def list_csv_files(dbx, website=None):
+    """Recursively list all .csv files under the base path (optionally filtered by website)."""
+    search_path = DROPBOX_BASE_PATH
+    if website:
+        search_path = "%s/%s" % (DROPBOX_BASE_PATH, capitalize_site(website))
+
+    csv_paths = []
+    try:
+        result = dbx.files_list_folder(search_path, recursive=True)
+    except dropbox.exceptions.ApiError:
+        return csv_paths
+
+    while True:
+        for entry in result.entries:
+            if isinstance(entry, dropbox.files.FileMetadata) and entry.name.endswith(".csv"):
+                csv_paths.append(entry.path_display)
+        if not result.has_more:
+            break
+        result = dbx.files_list_folder_continue(result.cursor)
+
+    return sorted(csv_paths)
+
+
+def download_and_concatenate(dbx, paths, output_path):
     """Download all CSVs and write them as a single file with one header."""
     header_written = False
     row_count = 0
 
     with open(output_path, "w", newline="", encoding="utf-8") as out:
         writer = None
-        for key in keys:
-            response = s3.get_object(Bucket=BUCKET, Key=key)
-            body = response["Body"].read().decode("utf-8")
+        for path in paths:
+            _, response = dbx.files_download(path)
+            body = response.content.decode("utf-8")
             reader = csv.DictReader(io.StringIO(body))
 
             if not header_written:
@@ -64,22 +83,24 @@ def download_and_concatenate(s3, keys, output_path):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Download all extracted CSVs from S3 into one file"
+        description="Download all extracted CSVs from Dropbox into one file"
     )
-    parser.add_argument("--retailer", help="Filter by retailer (e.g., amazon, walmart)")
+    parser.add_argument("--website", help="Filter by website (e.g., amazon, walmart)")
     parser.add_argument("--output", "-o", required=True, help="Output CSV file path")
     args = parser.parse_args()
 
-    s3 = get_s3_client()
-    keys = list_csv_keys(s3, args.retailer)
+    dbx = get_dropbox_client()
+    paths = list_csv_files(dbx, args.website)
 
-    if not keys:
-        prefix = "extracted/%s/" % args.retailer if args.retailer else "extracted/"
-        print("No CSV files found under s3://%s/%s" % (BUCKET, prefix))
+    if not paths:
+        search_path = DROPBOX_BASE_PATH
+        if args.website:
+            search_path = "%s/%s" % (DROPBOX_BASE_PATH, capitalize_site(args.website))
+        print("No CSV files found under %s" % search_path)
         return
 
-    print("Found %d CSV files, downloading..." % len(keys))
-    row_count = download_and_concatenate(s3, keys, args.output)
+    print("Found %d CSV files, downloading..." % len(paths))
+    row_count = download_and_concatenate(dbx, paths, args.output)
     print("Wrote %d rows to %s" % (row_count, args.output))
 
 

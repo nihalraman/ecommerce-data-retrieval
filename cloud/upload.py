@@ -1,88 +1,80 @@
-"""Upload bookmarklet captures, screenshots, and parsed CSVs to S3.
+"""Upload bookmarklet captures, screenshots, and parsed CSVs to Dropbox.
 
 Usage:
-    python cloud/upload.py --capture capture_www.amazon.com_20260324.json
-    python cloud/upload.py --capture capture.json --screenshot shot.png --csv parsed.csv
-    python cloud/upload.py --csv parsed.csv --retailer amazon
+    python cloud/upload.py --website amazon --category "coffee maker" \
+        --capture capture.json --screenshot shot.png --csv parsed.csv
 """
 
 import argparse
 import os
-import re
-from datetime import date
+from datetime import datetime
 
-import boto3
+import dropbox
 from dotenv import load_dotenv
 
 load_dotenv()
 
-BUCKET = os.getenv("AWS_S3_BUCKET", "ecommerce-search-captures")
-REGION = os.getenv("AWS_REGION", "us-east-1")
+DROPBOX_ACCESS_TOKEN = os.getenv("DROPBOX_ACCESS_TOKEN", "")
+DROPBOX_BASE_PATH = "/CM in China/ECommerce Project"
 
 
-def get_s3_client():
-    return boto3.client("s3", region_name=REGION)
+def get_dropbox_client():
+    if not DROPBOX_ACCESS_TOKEN:
+        raise RuntimeError("DROPBOX_ACCESS_TOKEN not set in environment")
+    return dropbox.Dropbox(DROPBOX_ACCESS_TOKEN)
 
 
-def detect_retailer(filename):
-    """Guess retailer from capture filename (e.g., capture_www.amazon.com_...)."""
-    name = os.path.basename(filename).lower()
-    if "amazon" in name:
-        return "amazon"
-    if "walmart" in name:
-        return "walmart"
-    if "costco" in name:
-        return "costco"
-    if "target" in name:
-        return "target"
-    if "1688" in name:
-        return "1688"
-    # Fall back to hostname extraction: capture_<hostname>_<stamp>
-    m = re.search(r'capture_([^_]+)', name)
-    if m:
-        return m.group(1).replace("www.", "").split(".")[0]
-    return "unknown"
+def capitalize_site(website):
+    """Map website key to capitalized Dropbox subdirectory name."""
+    if website.isdigit():
+        return website  # e.g. "1688" stays as-is
+    return website.capitalize()
 
 
-def upload_file(s3, filepath, prefix, retailer):
-    """Upload a file to S3 under prefix/retailer/date/filename."""
-    today = date.today().isoformat()
-    filename = os.path.basename(filepath)
-    key = "%s/%s/%s/%s" % (prefix, retailer, today, filename)
-    s3.upload_file(filepath, BUCKET, key)
-    print("Uploaded s3://%s/%s" % (BUCKET, key))
-    return key
+def build_base_name(website, category):
+    """Build the shared base name: {website}_{category}_{YYYY-MM-DD}T{HH-mm-ss}."""
+    now = datetime.now()
+    date_str = now.strftime("%Y-%m-%d")
+    time_str = now.strftime("%H-%M-%S")
+    cat = category.lower().replace(" ", "-")
+    return "%s_%s_%sT%s" % (website.lower(), cat, date_str, time_str)
+
+
+def upload_file(dbx, local_path, dropbox_path):
+    """Upload a single file to Dropbox."""
+    with open(local_path, "rb") as f:
+        dbx.files_upload(f.read(), dropbox_path, mode=dropbox.files.WriteMode.overwrite)
+    print("Uploaded %s" % dropbox_path)
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Upload captures and data to S3")
+    parser = argparse.ArgumentParser(description="Upload captures and data to Dropbox")
     parser.add_argument("--capture", help="Path to bookmarklet capture JSON file")
-    parser.add_argument("--screenshot", help="Path to screenshot PNG file")
+    parser.add_argument("--screenshot", help="Path to screenshot image file (PNG or JPEG)")
     parser.add_argument("--csv", help="Path to parsed CSV file")
-    parser.add_argument("--retailer", help="Retailer name (auto-detected from capture filename if omitted)")
+    parser.add_argument("--website", required=True, help="Website name (e.g. amazon, walmart)")
+    parser.add_argument("--category", required=True, help="Product category (e.g. 'coffee maker')")
     args = parser.parse_args()
 
     if not args.capture and not args.screenshot and not args.csv:
         parser.error("Provide at least one of --capture, --screenshot, or --csv")
 
-    # Detect retailer
-    retailer = args.retailer
-    if not retailer:
-        if args.capture:
-            retailer = detect_retailer(args.capture)
-        elif args.csv:
-            retailer = detect_retailer(args.csv)
-        else:
-            retailer = "unknown"
+    dbx = get_dropbox_client()
+    site_dir = capitalize_site(args.website)
+    base_name = build_base_name(args.website, args.category)
+    folder_path = "%s/%s/%s" % (DROPBOX_BASE_PATH, site_dir, base_name)
 
-    s3 = get_s3_client()
+    screenshot_ext = os.path.splitext(args.screenshot)[1] if args.screenshot else ".jpg"
+    file_map = {
+        args.capture: ".json",
+        args.screenshot: screenshot_ext,
+        args.csv: ".csv",
+    }
 
-    if args.capture:
-        upload_file(s3, args.capture, "raw-captures", retailer)
-    if args.screenshot:
-        upload_file(s3, args.screenshot, "screenshots", retailer)
-    if args.csv:
-        upload_file(s3, args.csv, "extracted", retailer)
+    for local_path, ext in file_map.items():
+        if local_path:
+            dropbox_path = "%s/%s%s" % (folder_path, base_name, ext)
+            upload_file(dbx, local_path, dropbox_path)
 
 
 if __name__ == "__main__":

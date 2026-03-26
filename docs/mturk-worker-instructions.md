@@ -61,6 +61,30 @@ Upload both files to the HIT:
 
 ---
 
+---
+
+## Alternative: Auto-Upload Bookmarklet (if provided)
+
+If you were given a **"Capture & Upload"** bookmarklet instead of the standard one, the workflow is simpler — no manual screenshot or file upload needed.
+
+### One-time setup
+
+1. Follow the same bookmark setup steps above, but use the "Capture & Upload" `javascript:...` code
+2. **Start the local server**: open a terminal and run `python server.py` (keep it running)
+
+### For each HIT
+
+1. Go to the search page and enter the keyword
+2. **Scroll slowly to the bottom**, wait 2–3 seconds, scroll back to the top
+3. **Click the bookmarklet** — a blue bar appears ("Capturing screenshot...")
+4. A prompt asks you to confirm the product category — verify it looks right and click OK
+5. Wait for the green bar: "Captured! X products uploaded to Dropbox"
+6. That's it — the screenshot, page data, and parsed CSV are uploaded automatically
+
+If you see a **yellow bar** ("Server unavailable"), the file was saved locally instead. Make sure `python server.py` is running and try again.
+
+---
+
 ## Troubleshooting
 
 **The bookmarklet didn't do anything** — Make sure you pasted the full `javascript:...` code into the **URL** field of the bookmark (not the Name field). Also make sure you're on the search results page, not the site's homepage.

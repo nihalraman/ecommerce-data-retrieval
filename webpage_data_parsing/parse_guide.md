@@ -110,6 +110,36 @@ col = ((rank - 1) % GRID_COLS) + 1
 
 ---
 
+## Server Integration
+
+For the auto-upload workflow (`server.py`), every parser must expose:
+
+- `CSV_COLUMNS` — module-level list of column header strings
+- `parse_html_string(html, category, page=1)` — accepts a raw HTML string (not a file path), returns a list of row dicts
+
+The recommended pattern is to extract core logic into `_parse_soup(soup, category, page)` and have both `parse_html()` (file-based CLI) and `parse_html_string()` (string-based server) call it:
+
+```python
+def _parse_soup(soup, category, page=1):
+    # All extraction logic here
+    return rows
+
+def parse_html(html_path, category, page=1):
+    html = load_html(html_path)
+    soup = BeautifulSoup(html, "html.parser")
+    for script in soup.find_all("script"):
+        script.decompose()
+    return _parse_soup(soup, category, page)
+
+def parse_html_string(html, category, page=1):
+    soup = BeautifulSoup(html, "html.parser")
+    for script in soup.find_all("script"):
+        script.decompose()
+    return _parse_soup(soup, category, page)
+```
+
+---
+
 ## Important Notes
 
 - **Scroll before copying HTML.** Lazy-loaded tiles won't appear in the DOM unless the page was fully scrolled first.

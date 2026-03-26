@@ -114,6 +114,19 @@ python bookmarklet/build.py --site TARGET_SITE
 
 ---
 
+## Step 6: Add a parser (required for auto-upload)
+
+If you want the bookmarklet + server workflow (Mode 4) to work for the new site, you must create a parser in `webpage_data_parsing/parse_<site>.py`. The parser must expose:
+
+- `CSV_COLUMNS` — list of column names
+- `parse_html_string(html, category, page=1)` — accepts raw HTML string, returns list of row dicts
+
+See `parse_guide.md` and the existing parsers (`parse_amazon.py`, `parse_walmart.py`, `parse_target.py`) as examples. The server will raise an error if no parser exists for the site.
+
+You must also add the site to `server.py`'s `SITE_MAP` and `PARSER_MAP` dicts.
+
+---
+
 ## Common problems
 
 **`productContainer` matches 0 elements** — The site may use lazy rendering. Try scrolling to the bottom first, then re-running. Also check if tiles are inside a shadow DOM (right-click → Inspect, look for `#shadow-root`). Shadow DOM requires a different approach.

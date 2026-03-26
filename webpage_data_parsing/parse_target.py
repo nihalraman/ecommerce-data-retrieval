@@ -159,22 +159,15 @@ def _is_in_carousel(tile):
     return False
 
 
-def parse_html(html_path, category, page=1):
-    """Parse Target HTML file and return list of product dicts."""
-    with open(html_path, encoding="utf-8") as f:
-        html = f.read()
-
-    soup = BeautifulSoup(html, "html.parser")
-    for script in soup.find_all("script"):
-        script.decompose()
-
+def _parse_soup(soup, category, page=1):
+    """Core extraction logic operating on a BeautifulSoup object."""
     # Select only main-grid product cards, not carousel items
     all_tiles = soup.select(
         '[data-test="@web/site-top-of-funnel/ProductCardWrapper"]'
     )
     tiles = [t for t in all_tiles if not _is_in_carousel(t)]
     if not tiles:
-        print(f"Warning: no product tiles found in {html_path}", file=sys.stderr)
+        print("Warning: no product tiles found", file=sys.stderr)
         return []
 
     rows = []
@@ -275,6 +268,24 @@ def parse_html(html_path, category, page=1):
         })
 
     return rows
+
+
+def parse_html(html_path, category, page=1):
+    """Parse Target HTML file and return list of product dicts."""
+    with open(html_path, encoding="utf-8") as f:
+        html = f.read()
+    soup = BeautifulSoup(html, "html.parser")
+    for script in soup.find_all("script"):
+        script.decompose()
+    return _parse_soup(soup, category, page)
+
+
+def parse_html_string(html, category, page=1):
+    """Parse raw HTML string (no file I/O). Used by server.py."""
+    soup = BeautifulSoup(html, "html.parser")
+    for script in soup.find_all("script"):
+        script.decompose()
+    return _parse_soup(soup, category, page)
 
 
 def main():
