@@ -1,16 +1,57 @@
 # Ecommerce Search Results Capture Tool
 
-Captures first-page search results from ecommerce sites for research purposes. Supports three collection methods: automated Playwright scraping, a Claude AI agent, and a bookmarklet for assisted manual collection.
+Captures first-page search results from ecommerce sites for research purposes. Not for commercial use.
+
+The primary workflow is **bookmarklet + local server**: a research assistant scrolls a page and clicks a bookmarklet, which captures the HTML, parses it into structured product data, and uploads everything to Dropbox automatically. Three additional collection methods are available for different use cases.
 
 ## Setup
 
 ```bash
 pip install -r requirements.txt
-playwright install chromium
-cp .env.example .env  # Add credentials (optional)
+playwright install chromium          # Only needed for Playwright mode
+cp .env.example .env                 # Add DROPBOX_ACCESS_TOKEN (required for upload)
 ```
 
-## 1. Playwright Scraping (Automated)
+## Collection Methods
+
+### 1. Bookmarklet + Server (primary)
+
+A browser bookmarklet captures page HTML and sends it to a local server, which auto-detects the retailer, runs the site-specific parser, and uploads the raw capture, parsed CSV, and screenshot to Dropbox -- all in one click.
+
+**Start the server:**
+```bash
+python server.py
+```
+
+**Generate the bookmarklet:**
+```bash
+python bookmarklet/build.py
+```
+
+Copy the "Capture & Upload" `javascript:...` string and save it as a browser bookmark.
+
+**Collect data:**
+1. Navigate to the search results page in an incognito window
+2. Scroll slowly to the bottom (loads lazy-loaded products), then back to the top
+3. Click the **Capture & Upload** bookmark
+4. Confirm the product category and whether to include a screenshot
+5. Wait for the green banner confirming success
+
+If the server is unreachable, the bookmarklet falls back to saving a JSON file locally.
+
+### 2. Bookmarklet (manual, no server)
+
+The "Capture Only" bookmarklet downloads a JSON file locally without contacting the server. Parse it afterward with a site-specific parser:
+
+```bash
+python webpage_data_parsing/parse_amazon.py --category "Coffee Maker" capture.json
+python webpage_data_parsing/parse_walmart.py --category "Coffee Maker" capture.json
+python webpage_data_parsing/parse_target.py --category "Bottled Water" capture.html
+```
+
+Parsers accept both `.json` (bookmarklet captures) and `.html` (raw DevTools HTML) files.
+
+### 3. Playwright Scraping
 
 Opens a real browser, extracts product data via DOM selectors, takes a screenshot, and writes results to CSV.
 
@@ -20,88 +61,49 @@ python run.py --mode scrape --site costco "coffee maker"
 
 Output: `outputs/costco/results.csv` + `outputs/costco/screenshots/`
 
-## 2. Claude AI Agent
+### 4. Claude AI Agent
 
-Claude controls your browser via the Chrome extension and extracts product data visually from screenshots. No selectors needed — works on any site.
+Claude controls your browser via the Chrome extension and extracts product data visually from screenshots. No selectors needed.
 
 ```bash
 claude --chrome                                  # Launch with Chrome extension
 /scrape-agent --site costco "coffee maker"       # Run inside Claude Code
 ```
 
-## 3. Bookmarklet (Manual)
+## Parsers
 
-A browser bookmarklet captures the full page HTML as a JSON file. The same bookmarklet works on any site. Product data is extracted later with site-specific parsers.
+Each supported site has a parser in `webpage_data_parsing/` that extracts structured product data from captured HTML. Every parser outputs a CSV with these columns:
 
-### Generate the bookmarklet
+> Retailer, Product Category, Product Description, Brand, Price, Size, Rating, # of Reviews, Page, Row, Column, Private Label, Sponsored, Merchandising Tag, Remarks
 
-```bash
-python bookmarklet/build.py
-```
+Each site requires its own parser because HTML structure differs across retailers. See [`webpage_data_parsing/parse_guide.md`](webpage_data_parsing/parse_guide.md) for how to write a new one.
 
-Copy the printed `javascript:...` string and save it as a browser bookmark.
+## Cloud Storage (Dropbox)
 
-### Capture a page
-
-1. Navigate to the search results page
-2. **Scroll slowly to the bottom** (loads lazy-loaded products), wait 2-3 seconds
-3. Scroll back to the top
-4. Click the bookmarklet — a JSON file downloads automatically
-5. Take a manual screenshot (Cmd+Shift+4 / Win+Shift+S) for audit trail
-
-The bookmarklet strips scripts, tracking pixels, and comments before saving to reduce file size (~70% smaller than raw HTML).
-
-### Parse captured HTML
-
-```bash
-python webpage_data_parsing/parse_amazon.py --category "Coffee Maker" capture.json
-python webpage_data_parsing/parse_walmart.py --category "Coffee Maker" capture.json
-python webpage_data_parsing/parse_target.py --category "Bottled Water" capture.html
-```
-
-Each parser outputs a CSV with: Retailer, Product Category, Product Description, Brand, Price, Size, Rating, Reviews, Page, Row, Column, Private Label, Sponsored, Merchandising Tag, Remarks.
-
-Parsers accept both `.json` (bookmarklet captures) and `.html` (raw HTML) files.
-
-See [docs/mturk-worker-instructions.md](docs/mturk-worker-instructions.md) for the full worker guide.
-
-## AWS S3 Storage
-
-Captures, screenshots, and parsed CSVs can be uploaded to S3 for centralized access.
+The server uploads captures, parsed CSVs, and screenshots to Dropbox automatically.
 
 ### Configure
 
 Add to `.env`:
 ```
-AWS_ACCESS_KEY_ID=your-access-key
-AWS_SECRET_ACCESS_KEY=your-secret-key
-AWS_S3_BUCKET=ecommerce-search-captures
-AWS_REGION=us-east-1
+DROPBOX_ACCESS_TOKEN=your-token
 ```
 
-Or configure `~/.aws/credentials` — boto3 picks it up automatically.
-
-### Upload
+### Manual upload
 
 ```bash
-# Upload any combination of capture, screenshot, and parsed CSV
-python cloud/upload.py --capture capture.json --screenshot shot.png --csv parsed.csv
-```
-
-Files are organized on S3 as:
-```
-raw-captures/{retailer}/{date}/{filename}.json
-screenshots/{retailer}/{date}/{filename}.png
-extracted/{retailer}/{date}/{filename}.csv
+python cloud/upload.py --website amazon --category "coffee maker" \
+    --capture capture.json --screenshot shot.png --csv parsed.csv
 ```
 
 ### Download all results as one CSV
 
 ```bash
-python cloud/download_all.py --retailer amazon --output amazon_all_results.csv
+python cloud/download_all.py --website amazon --output amazon_all_results.csv
 python cloud/download_all.py --output all_results.csv   # All retailers
 ```
 
 ## Adding New Sites
 
-Add an entry to `config/sites.json` (Playwright mode) or write a new parser in `webpage_data_parsing/` (bookmarklet mode). See [docs/adding-a-new-site.md](docs/adding-a-new-site.md).
+- **Playwright mode**: Add an entry to `config/sites.json`
+- **Bookmarklet mode**: Write a new parser in `webpage_data_parsing/` (see [`parse_guide.md`](webpage_data_parsing/parse_guide.md)) and register it in `server.py`'s `PARSER_MAP`
